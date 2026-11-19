@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+venv/
+# Sécurité : ne JAMAIS publier une clé de compte de service
+cle*.json
+*firebase-adminsdk*.json
+*service-account*.json
+serviceAccount*.json

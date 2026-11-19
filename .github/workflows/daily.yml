@@ -1,0 +1,49 @@
+name: Édition quotidienne
+
+on:
+  schedule:
+    # Toutes les 20 minutes, à des minutes « creuses » (évite l'heure pile, très chargée chez GitHub).
+    - cron: "7,27,47 * * * *"
+  workflow_dispatch: {}   # permet aussi un lancement manuel (onglet Actions → Run workflow)
+
+# Une seule exécution à la fois : jamais deux éditions composées en parallèle.
+concurrency:
+  group: quotidien-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # uniquement pour le « petit signe de vie » mensuel (dernière étape)
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Collecter, composer et livrer
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          NEWSAPI_KEY: ${{ secrets.NEWSAPI_KEY }}
+        run: python pipeline.py
+
+      # GitHub désactive les tâches planifiées d'un dépôt public après 60 jours sans activité.
+      # Si le dernier commit a plus de 45 jours, on en crée un (vide) pour relancer le compteur.
+      - name: Signe de vie (anti-désactivation)
+        run: |
+          last=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          if [ $(( (now - last) / 86400 )) -ge 45 ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "Signe de vie automatique"
+            git push
+          fi

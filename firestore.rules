@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Articles et configuration : lecture pour les utilisateurs connectés, écriture réservée au serveur.
+    match /articles/{id} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /config/{doc} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    match /users/{uid} {
+      // Champs que l'application a le droit de modifier.
+      // Les champs gérés par le serveur (nextDeliveryAt, scheduleSig, lastEditionDate) sont exclus.
+      function editable() {
+        return ['topics', 'timezone', 'deliveryTime', 'deliveryDays', 'deliveryCustomDays',
+                'fcmTokens', 'audio', 'prefs'];
+      }
+      function owner() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasOnly(editable())
+        && (!('topics' in request.resource.data) || request.resource.data.topics.size() <= 30);
+      allow update: if owner()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(editable())
+        && (!('topics' in request.resource.data) || request.resource.data.topics.size() <= 30);
+      allow delete: if owner();
+
+      match /editions/{date} {
+        allow read: if owner();
+        allow write: if false;
+      }
+      match /favorites/{id} {
+        allow read, write: if owner();
+      }
+    }
+  }
+}

@@ -1,0 +1,328 @@
+[
+ {
+  "id": "ia",
+  "label": "Intelligence artificielle",
+  "aliases_fr": [
+   "ia",
+   "intelligence artificielle",
+   "machine learning",
+   "chatbot",
+   "apprentissage automatique"
+  ],
+  "keywords_en": [
+   "AI",
+   "artificial intelligence",
+   "machine learning",
+   "LLM",
+   "large language model",
+   "chatbot",
+   "neural network",
+   "generative",
+   "deep learning",
+   "OpenAI",
+   "Anthropic",
+   "Gemini"
+  ]
+ },
+ {
+  "id": "securite",
+  "label": "Cybersécurité",
+  "aliases_fr": [
+   "sécurité",
+   "cybersécurité",
+   "piratage",
+   "faille",
+   "ransomware"
+  ],
+  "keywords_en": [
+   "security",
+   "vulnerability",
+   "ransomware",
+   "malware",
+   "phishing",
+   "breach",
+   "exploit",
+   "zero-day",
+   "CVE",
+   "hacker",
+   "cyberattack",
+   "encryption"
+  ]
+ },
+ {
+  "id": "mobile",
+  "label": "Mobile & Android",
+  "aliases_fr": [
+   "mobile",
+   "android",
+   "smartphone",
+   "iphone",
+   "téléphone"
+  ],
+  "keywords_en": [
+   "Android",
+   "iPhone",
+   "iOS",
+   "smartphone",
+   "Pixel",
+   "Galaxy",
+   "mobile app",
+   "tablet",
+   "wearable"
+  ]
+ },
+ {
+  "id": "opensource",
+  "label": "Open source",
+  "aliases_fr": [
+   "open source",
+   "libre",
+   "linux",
+   "logiciel libre"
+  ],
+  "keywords_en": [
+   "open source",
+   "open-source",
+   "Linux",
+   "GitHub",
+   "GPL",
+   "FOSS",
+   "kernel",
+   "Rust",
+   "maintainer"
+  ]
+ },
+ {
+  "id": "cloud",
+  "label": "Cloud & DevOps",
+  "aliases_fr": [
+   "cloud",
+   "devops",
+   "serveur",
+   "kubernetes",
+   "docker"
+  ],
+  "keywords_en": [
+   "cloud",
+   "AWS",
+   "Azure",
+   "Kubernetes",
+   "Docker",
+   "DevOps",
+   "serverless",
+   "data center",
+   "datacenter",
+   "CI/CD"
+  ]
+ },
+ {
+  "id": "hardware",
+  "label": "Hardware & puces",
+  "aliases_fr": [
+   "hardware",
+   "puce",
+   "processeur",
+   "carte graphique",
+   "ordinateur"
+  ],
+  "keywords_en": [
+   "chip",
+   "processor",
+   "CPU",
+   "GPU",
+   "semiconductor",
+   "laptop",
+   "RAM",
+   "SSD",
+   "RISC-V",
+   "NVIDIA"
+  ]
+ },
+ {
+  "id": "jeux",
+  "label": "Jeux vidéo",
+  "aliases_fr": [
+   "jeux",
+   "jeu vidéo",
+   "gaming",
+   "console"
+  ],
+  "keywords_en": [
+   "video game",
+   "gaming",
+   "Steam",
+   "PlayStation",
+   "Xbox",
+   "Nintendo",
+   "console",
+   "esports",
+   "game developer"
+  ]
+ },
+ {
+  "id": "startups",
+  "label": "Startups",
+  "aliases_fr": [
+   "startup",
+   "levée de fonds",
+   "investissement"
+  ],
+  "keywords_en": [
+   "startup",
+   "funding",
+   "Series A",
+   "Series B",
+   "seed round",
+   "venture",
+   "raises",
+   "acquisition",
+   "IPO",
+   "valuation"
+  ]
+ },
+ {
+  "id": "social",
+  "label": "Réseaux sociaux",
+  "aliases_fr": [
+   "réseaux sociaux",
+   "instagram",
+   "tiktok",
+   "youtube"
+  ],
+  "keywords_en": [
+   "social media",
+   "Instagram",
+   "TikTok",
+   "Twitter",
+   "Facebook",
+   "Threads",
+   "Bluesky",
+   "Mastodon",
+   "YouTube"
+  ]
+ },
+ {
+  "id": "science",
+  "label": "Science & espace",
+  "aliases_fr": [
+   "science",
+   "espace",
+   "nasa",
+   "fusée",
+   "astronomie"
+  ],
+  "keywords_en": [
+   "NASA",
+   "space",
+   "rocket",
+   "satellite",
+   "telescope",
+   "astronomy",
+   "physics",
+   "quantum",
+   "SpaceX",
+   "ESA"
+  ]
+ },
+ {
+  "id": "photo",
+  "label": "Photographie",
+  "aliases_fr": [
+   "photo",
+   "photographie",
+   "appareil photo",
+   "retouche photo",
+   "objectif"
+  ],
+  "keywords_en": [
+   "photography",
+   "photographer",
+   "camera",
+   "lens",
+   "mirrorless",
+   "DSLR",
+   "Lightroom",
+   "photo editing",
+   "sensor"
+  ]
+ },
+ {
+  "id": "montage-video",
+  "label": "Montage vidéo",
+  "aliases_fr": [
+   "montage",
+   "vidéo",
+   "montage vidéo",
+   "étalonnage"
+  ],
+  "keywords_en": [
+   "video editing",
+   "video editor",
+   "DaVinci",
+   "Premiere",
+   "Final Cut",
+   "footage",
+   "color grading",
+   "video production"
+  ]
+ },
+ {
+  "id": "web",
+  "label": "Web & navigateurs",
+  "aliases_fr": [
+   "web",
+   "navigateur",
+   "chrome",
+   "firefox",
+   "javascript"
+  ],
+  "keywords_en": [
+   "browser",
+   "Chrome",
+   "Firefox",
+   "Safari",
+   "web standard",
+   "JavaScript",
+   "CSS",
+   "WebAssembly",
+   "HTTP"
+  ]
+ },
+ {
+  "id": "vie-privee",
+  "label": "Vie privée",
+  "aliases_fr": [
+   "vie privée",
+   "rgpd",
+   "traçage",
+   "vpn"
+  ],
+  "keywords_en": [
+   "privacy",
+   "GDPR",
+   "tracking",
+   "surveillance",
+   "data protection",
+   "cookies",
+   "VPN"
+  ]
+ },
+ {
+  "id": "robotique",
+  "label": "Robotique",
+  "aliases_fr": [
+   "robot",
+   "robotique",
+   "drone",
+   "voiture autonome"
+  ],
+  "keywords_en": [
+   "robot",
+   "robotics",
+   "drone",
+   "humanoid",
+   "autonomous",
+   "self-driving"
+  ]
+ }
+]
