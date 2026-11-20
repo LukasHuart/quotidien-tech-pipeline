@@ -5,7 +5,7 @@ from collections import Counter
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from . import config, scoring, topics as topiclib
+from . import config, dedupe, scoring, topics as topiclib
 
 
 def _tags(x: dict) -> list[str]:
@@ -53,7 +53,8 @@ def build_edition(user_topics, articles, seen_ids, now: datetime, tz_name: str =
     chosen, ids, per_source = [], set(), Counter()
 
     def room(x):
-        return x["a"]["id"] not in ids and per_source[x["a"]["source_id"]] < config.MAX_PER_SOURCE
+        return (x["a"]["id"] not in ids and per_source[x["a"]["source_id"]] < config.MAX_PER_SOURCE
+                and not any(dedupe.same_story(x["a"], c["a"]) for c in chosen))
 
     def add(x):
         chosen.append(x)

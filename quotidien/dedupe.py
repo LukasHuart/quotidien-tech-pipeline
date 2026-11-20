@@ -1,7 +1,10 @@
 """Regroupe les articles qui racontent la même histoire (même URL ou titres très proches)."""
 from __future__ import annotations
 
+import logging
 import re
+
+log = logging.getLogger("quotidien")
 
 _STOP = {
     "the", "and", "for", "with", "from", "that", "this", "are", "was", "new", "its", "has", "have",
@@ -10,13 +13,47 @@ _STOP = {
 }
 
 
+def _stem(t: str) -> str:
+    """Racine grossière : « patches / patched / patching » → « patch »."""
+    for suf, rep in (("ies", "y"), ("ing", ""), ("ed", ""), ("es", ""), ("s", "")):
+        if t.endswith(suf) and len(t) - len(suf) >= 4:
+            t = t[: -len(suf)] + rep
+            break
+    return t[:-1] if t.endswith("e") and len(t) > 4 else t
+
+
+def tokens(text: str) -> frozenset[str]:
+    return frozenset(_stem(t) for t in re.findall(r"[a-z0-9]+", text.lower()) if len(t) >= 3 and t not in _STOP)
+
+
 def title_tokens(title: str) -> frozenset[str]:
-    return frozenset(t for t in re.findall(r"[a-z0-9]+", title.lower()) if len(t) >= 3 and t not in _STOP)
+    return tokens(title)
+
+
+def body_tokens(a: dict) -> frozenset[str]:
+    """Titre + extrait : deux articles sur le même sujet partagent beaucoup de mots même si les titres diffèrent."""
+    return tokens(f'{a.get("title", "")} {a.get("excerpt", "")}')
 
 
 def similar(a: frozenset[str], b: frozenset[str], threshold: float = 0.5) -> bool:
+    """Même histoire (regroupement strict, à la collecte) : titres très proches."""
     inter = len(a & b)
-    return inter >= 3 and inter / len(a | b) >= threshold
+    if inter < 3:
+        return False
+    return inter / len(a | b) >= threshold or inter / min(len(a), len(b)) >= 0.6
+
+
+def same_story(x: dict, y: dict) -> bool:
+    """Garde-fou plus large, utilisé à la composition d'une édition : ne pas montrer deux fois l'histoire.
+    Écarter à tort un article coûte peu (il est remplacé par le suivant) ; en montrer deux fois gêne."""
+    ta, tb = title_tokens(x["title"]), title_tokens(y["title"])
+    inter = len(ta & tb)
+    small = min(len(ta), len(tb)) or 1
+    if (inter >= 3 and inter / small >= 0.5) or (inter >= 2 and inter / small >= 0.75):
+        return True
+    ba, bb = body_tokens(x), body_tokens(y)
+    shared = len(ba & bb)
+    return shared >= 5 and shared / (min(len(ba), len(bb)) or 1) >= 0.4
 
 
 def cluster(items: list[dict]) -> list[list[int]]:
@@ -31,8 +68,12 @@ def cluster(items: list[dict]) -> list[list[int]]:
     toks = [title_tokens(a["title"]) for a in items]
     for i in range(len(items)):
         for j in range(i + 1, len(items)):
-            if items[i]["id"] == items[j]["id"] or similar(toks[i], toks[j]):
+            if items[i]["id"] == items[j]["id"]:
                 parent[find(i)] = find(j)
+            elif similar(toks[i], toks[j]):
+                parent[find(i)] = find(j)
+                if not (items[i].get("_existing") and items[j].get("_existing")):
+                    log.info("doublon regroupé : « %.70s » ≈ « %.70s »", items[i]["title"], items[j]["title"])
     groups: dict[int, list[int]] = {}
     for i in range(len(items)):
         groups.setdefault(find(i), []).append(i)
