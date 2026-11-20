@@ -57,7 +57,12 @@ def clean_text(s: str | None) -> str:
 def truncate(s: str, limit: int = config.EXCERPT_MAX_CHARS) -> str:
     if len(s) <= limit:
         return s
-    cut = s[:limit].rsplit(" ", 1)[0].rstrip(" ,;:.-")
+    head = s[:limit]
+    # Si possible, couper à la fin d'une phrase : une phrase entière se traduit bien mieux qu'un morceau.
+    ends = [m.end() for m in re.finditer(r"[.!?](?=\s)", head)]
+    if ends and ends[-1] >= limit * 0.5:
+        return head[: ends[-1]]
+    cut = head.rsplit(" ", 1)[0].rstrip(" ,;:.-")
     return cut + "…"
 
 

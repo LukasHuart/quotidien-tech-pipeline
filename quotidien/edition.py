@@ -34,7 +34,7 @@ def build_edition(user_topics, articles, seen_ids, now: datetime, tz_name: str =
     cutoff = now - timedelta(hours=config.CANDIDATE_WINDOW_HOURS)
     scored = []
     for a in articles:
-        if a["published"] < cutoff or a["id"] in seen_ids:
+        if a["published"] < cutoff or a["id"] in seen_ids or scoring.is_promo(a):
             continue
         st = {t["id"]: topiclib.strength(a, t["keywords"]) for t in topics}
         st = {k: v for k, v in st.items() if v > 0}
